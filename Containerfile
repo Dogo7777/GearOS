@@ -27,12 +27,13 @@ mkdir -p /usr/share/aurorae/themes
 cp -r /tmp/AurowaitaDark /usr/share/aurorae/themes/
 rm -rf /tmp/AurowaitaDark
 
+# Kvantum
 dnf5 install -y kvantum
 mkdir -p /usr/share/Kvantum
 cp -r /tmp/Kvantum/Libadwaita-KDE-Default /usr/share/Kvantum/
 rm -rf /tmp/Kvantum
 
-# 1. BASE KDE PLASMA com Plasma Login Manager (Integrações GNOME mantidas por demanda)
+# 1. BASE KDE PLASMA com Plasma Login Manager
 dnf5 install -y --setopt=install_weak_deps=False \
     plasma-desktop plasma-workspace-wayland \
     plasma-login-manager \
@@ -41,7 +42,7 @@ dnf5 install -y --setopt=install_weak_deps=False \
     gnome-software \
     xdg-desktop-portal xdg-desktop-portal-kde
 
-# Remove apps padrão do KDE e todo GNOME/GDM (Mantido GNOME Software, Nautilus e Ptyxis)
+# Remove apps padrão do KDE e todo GNOME/GDM
 dnf5 remove -y konsole dolphin gdm gnome-shell gnome-session || true
 
 # 2. ÁUDIO
@@ -76,11 +77,11 @@ dnf5 install -y --skip-unavailable \
 printf '[zram0]\nzram-size = ram / 2\ncompression-algorithm = zstd\n' \
     > /etc/systemd/zram-generator.conf
 
-# 5. KERNEL CACHYOS (Instalação segura sem weak deps para não puxar o kernel fedora)
+# 5. KERNEL CACHYOS
 dnf5 install -y 'dnf5-command(copr)'
 dnf5 copr enable -y bieszczaders/kernel-cachyos
 export INITRD=no
-dnf5 remove -y kernel kernel-core kernel-modules && dnf5 autoremove -y
+dnf5 remove -y kernel kernel-core kernel-modules && dnf5 autoremove -y || true
 dnf5 install -y --allowerasing --setopt=install_weak_deps=False \
     kernel-cachyos-modules \
     kernel-cachyos
@@ -105,55 +106,60 @@ magick /tmp/logo.png -resize 512x512 /usr/share/pixmaps/gearos-full.png
 # Tema do Anaconda
 cp /tmp/anaconda-theme.css /usr/share/anaconda/themes/gearos.css
 
-# Nome da distro
+# Nome da distro — mantém ID=fedora para compatibilidade com bootc/RPM
 sed -i 's|^PRETTY_NAME=.*|PRETTY_NAME="GearOS"|' /etc/os-release
 sed -i 's|^NAME=.*|NAME="GearOS"|' /etc/os-release
-sed -i 's|^ID=.*|ID=fedora|' /etc/os-release
-sed -i 's|^VARIANT=.*|VARIANT="GearOS Edition"|' /etc/os-release || echo 'VARIANT="GearOS Edition"' >> /etc/os-release
+grep -q '^VARIANT=' /etc/os-release && \
+    sed -i 's|^VARIANT=.*|VARIANT="GearOS Edition"|' /etc/os-release || \
+    echo 'VARIANT="GearOS Edition"' >> /etc/os-release
 
-# Botões minimizar/maximizar nas apps GTK (Integração GNOME mantida)
+# Botões minimizar/maximizar nas apps GTK
 mkdir -p /etc/dconf/db/local.d
 printf '[org/gnome/desktop/wm/preferences]\nbutton-layout='"'"'appmenu:minimize,maximize,close'"'"'\n' \
     > /etc/dconf/db/local.d/01-gearos
-dconf update || true
 
-# Adiciona Flathub por padrão (Apps GUI pesados funcionam melhor via Flatpak em sistemas imutáveis)
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+# Ícone Papirus via gschema
+printf '[org.gnome.desktop.interface]\nicon-theme='"'"'Papirus'"'"'\n' \
+    > /usr/share/glib-2.0/schemas/99-gearos-theme.gschema.override
+
+dconf update || true
+glib-compile-schemas /usr/share/glib-2.0/schemas/
+
+# Flathub
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo || true
 
 rm /tmp/logo.png /tmp/anaconda-theme.css
-restorecon -Rv /usr/local /opt /var/opt /var/usrlocal
 MAINEOF
 
-# ==============================================================
-# INSTALAÇÃO DO ECOSISTEMA ZSH (Oh My Zsh + P10k + Plugins)
-# ==============================================================
-RUN git clone https://github.com/ohmyzsh/ohmyzsh.git /usr/share/oh-my-zsh && \
+# Oh My Zsh + Powerlevel10k + Plugins
+RUN git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git /usr/share/oh-my-zsh && \
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /usr/share/oh-my-zsh/custom/themes/powerlevel10k && \
     git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/zsh-autosuggestions && \
     git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-
-# Configuração de ícones GNOME
-RUN echo -e "[org.gnome.desktop.interface]\nicon-theme='Papirus'" > /usr/share/glib-2.0/schemas/99-gearos-theme.gschema.override && \
-    glib-compile-schemas /usr/share/glib-2.0/schemas/
 
 # 8. CONFIGURAÇÃO DE PADRÕES E SERVIÇOS
 RUN <<CONFIGEOF
 set -ex
 
-# Define Nautilus e Ptyxis como padrão (Integração GNOME mantida)
+# Define Nautilus e Ptyxis como padrão
 mkdir -p /etc/xdg
 printf '[Default Applications]\ninode/directory=nautilus.desktop\nx-scheme-handler/terminal=org.gnome.Ptyxis.desktop\n' \
     > /etc/xdg/mimeapps.list
-    
+
+# KDE skel
 mkdir -p /etc/skel/.config/Kvantum
+mkdir -p /etc/skel/.config/qt5ct
+mkdir -p /etc/skel/.config/qt6ct
+mkdir -p /etc/skel/.config/gtk-3.0
+mkdir -p /etc/skel/.config/gtk-4.0
+
+# Kvantum tema
 cat > /etc/skel/.config/Kvantum/kvantum.kvconfig << 'KVCONFIG'
 [General]
 theme=Libadwaita-KDE-DefaultDark
 KVCONFIG
 
 # Qt usar Kvantum
-mkdir -p /etc/skel/.config/qt5ct
-mkdir -p /etc/skel/.config/qt6ct
 cat > /etc/skel/.config/qt5ct/qt5ct.conf << 'QT5'
 [Appearance]
 style=kvantum
@@ -164,17 +170,18 @@ cat > /etc/skel/.config/qt6ct/qt6ct.conf << 'QT6'
 style=kvantum
 QT6
 
-# KDE skel - terminal, taskbar e decoração de janela
-mkdir -p /etc/skel/.config
+# GTK tema escuro
+cat > /etc/skel/.config/gtk-3.0/settings.ini << 'GTK3'
+[Settings]
+gtk-application-prefer-dark-theme=1
+GTK3
 
-# Taskbar limpa
-cp /tmp/plasma-appletsrc /etc/skel/.config/plasma-org.kde.plasma.desktop-appletsrc
+cat > /etc/skel/.config/gtk-4.0/settings.ini << 'GTK4'
+[Settings]
+gtk-application-prefer-dark-theme=1
+GTK4
 
-# Diretórios GTK
-mkdir -p /etc/skel/.config/gtk-3.0
-mkdir -p /etc/skel/.config/gtk-4.0
-
-# Tema escuro global KDE
+# KDE global - tema escuro + AurowaitaDark + Ptyxis
 cat > /etc/skel/.config/kdeglobals << 'KDEGLOBALS'
 [General]
 TerminalApplication=ptyxis
@@ -188,72 +195,41 @@ library=org.kde.kwin.aurorae
 theme=__aurorae__svg__AurowaitaDark
 KDEGLOBALS
 
-# Tema escuro no KWin
+# KWin decoração
 cat > /etc/skel/.config/kwinrc << 'KWINRC'
 [org.kde.kdecoration2]
 library=org.kde.kwin.aurorae
 theme=__aurorae__svg__AurowaitaDark
 KWINRC
 
-# Cores escuras GTK para apps GNOME (Integração GNOME mantida)
-cat > /etc/skel/.config/gtk-3.0/settings.ini << 'GTK3'
-[Settings]
-gtk-application-prefer-dark-theme=1
-GTK3
-
-cat > /etc/skel/.config/gtk-4.0/settings.ini << 'GTK4'
-[Settings]
-gtk-application-prefer-dark-theme=1
-GTK4
+# Taskbar
+cp /tmp/plasma-appletsrc /etc/skel/.config/plasma-org.kde.plasma.desktop-appletsrc
 
 # Kargs do bootc
 mkdir -p /usr/lib/bootc/kargs.d
 printf 'kargs = ["intel_pstate=active", "mitigations=off", "nowatchdog"]\n' \
     > /usr/lib/bootc/kargs.d/01-otimizacao.toml
 
-# Shell padrão zsh para root E novos usuários
+# Shell padrão zsh para todos
 chsh -s /usr/bin/zsh root
 sed -i 's|^SHELL=.*|SHELL=/usr/bin/zsh|' /etc/default/useradd
-sed -i 's|^#\s*DSHELL=.*|DSHELL=/usr/bin/zsh|' /etc/default/useradd || \
-    printf '\nDSHELL=/usr/bin/zsh\n' >> /etc/default/useradd
 grep -q '/usr/bin/zsh' /etc/shells || echo '/usr/bin/zsh' >> /etc/shells
 
-# ==========================================
-# CONFIGURAÇÃO DO ZSH (UNIFICADA E CORRIGIDA)
-# ==========================================
+# .zshrc com gear CLI + Oh My Zsh + P10k
 cat > /etc/skel/.zshrc << 'ZSHRC'
-# Enable Powerlevel10k instant prompt.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# Cores
+c_red='\033[0;31m'; c_green='\033[0;32m'; c_yellow='\033[0;33m'
+c_blue='\033[0;34m'; c_magenta='\033[0;35m'; c_cyan='\033[0;36m'
+c_text='\033[0;37m'; c_sub='\033[0;90m'; c_alert='\033[1;31m'; c_reset='\033[0m'
 
-# ==========================================
-# GEAROS CLI - GERENCIADOR DE ECOSSISTEMAS
-# ==========================================
+# Função gear CLI
 gear() {
-    local c_red="\e[38;5;196m"
-    local c_green="\e[38;5;82m"
-    local c_yellow="\e[38;5;220m"
-    local c_blue="\e[38;5;33m"
-    local c_magenta="\e[38;5;198m"
-    local c_cyan="\e[38;5;38m"
-    local c_text="\e[1;37m"
-    local c_sub="\e[38;5;245m"
-    local c_alert="\e[38;5;196m"
-    local c_reset="\e[0m"
-
-    _criar_ecossistema() {
-        if [[ "$1" == "arch" ]] && ! distrobox list | grep -q "gear-arch"; then
-            echo -e "${c_sub}➜ Criando ecossistema Arch Linux (gear-arch)...${c_reset}"
-            distrobox create -n gear-arch -i docker.io/archlinux:latest -Y
-            echo -e "${c_sub}➜ Injetando dependências vitais no Arch...${c_reset}"
-            distrobox enter "gear-arch" -- sh -c "sudo pacman -Syu --noconfirm base-devel git wget curl nano unzip"
-        
-        elif [[ "$1" == "debian" ]] && ! distrobox list | grep -q "gear-debian"; then
-            echo -e "${c_sub}➜ Criando ecossistema Debian (gear-debian)...${c_reset}"
-            distrobox create -n gear-debian -i docker.io/library/debian:latest -Y
-            echo -e "${c_sub}➜ Injetando dependências vitais no Debian...${c_reset}"
-            distrobox enter "gear-debian" -- sh -c "sudo apt update && sudo apt install -y build-essential git wget curl nano unzip software-properties-common apt-transport-https"
+    local _criar_ecossistema() {
+        local distro="$1"
+        local box_name="gear-${distro}"
+        if ! distrobox list 2>/dev/null | grep -q "$box_name"; then
+            echo -e "${c_cyan}::${c_text} Criando ecossistema ${distro}...${c_reset}"
+            distrobox create --name "$box_name" --image "${distro}:latest" -Y
         fi
     }
 
@@ -261,113 +237,60 @@ gear() {
         install)
             local pkg="$2"
             if [[ -z "$pkg" ]]; then
-                echo -e "${c_alert}Erro: Você precisa informar o nome do pacote ou arquivo .deb.${c_reset}"
+                echo -e "${c_alert}Erro: informe o nome do pacote.${c_reset}"
                 return 1
             fi
-
-            if ! command -v distrobox &> /dev/null; then
-                echo -e "${c_alert}Erro: 'distrobox' não encontrado.${c_reset}"
-                return 1
-            fi
-
             if [[ -f "$pkg" && "$pkg" == *.deb ]]; then
                 local deb_path=$(realpath "$pkg")
-                echo -e "\n${c_cyan}::${c_text} Arquivo .deb detectado! Direcionando para o ecossistema Debian...${c_reset}"
+                echo -e "\n${c_cyan}::${c_text} .deb detectado! Instalando via Debian...${c_reset}"
                 _criar_ecossistema "debian"
-                echo -e "${c_sub}➜ Instalando pacote e dependências...${c_reset}"
                 distrobox enter "gear-debian" -- sh -c "sudo apt update && sudo apt install -y \"$deb_path\""
-
-                echo -e "\n${c_text}Instalação concluída! Qual é o nome oficial deste app?${c_reset}"
-                echo -n -e "${c_yellow}Nome para exportar: ${c_reset}"
-                read app_name
-
-                if [[ -n "$app_name" ]]; then
-                    echo -e "${c_sub}➜ Exportando atalhos para o GearOS...${c_reset}"
-                    distrobox enter "gear-debian" -- distrobox-export --app "$app_name" 2>/dev/null
-                    distrobox enter "gear-debian" -- distrobox-export --bin "/usr/bin/$app_name" --export-path "$HOME/.local/bin" 2>/dev/null
-                    echo -e "${c_green}Pronto! O aplicativo foi integrado ao seu menu.${c_reset}\n"
-                fi
+                echo -n -e "${c_yellow}Nome para exportar: ${c_reset}"; read app_name
+                [[ -n "$app_name" ]] && distrobox enter "gear-debian" -- distrobox-export --app "$app_name" 2>/dev/null
                 return 0
             fi
-
-            echo -e "\n${c_text}Onde você deseja instalar '${c_yellow}${pkg}${c_text}'?${c_reset}"
-            echo -e "  [1] ${c_cyan}Arch Linux${c_reset} (Oficial, via pacman)"
-            echo -e "  [2] ${c_red}Debian${c_reset}     (Estável, via apt)"
-            echo -e "  [3] ${c_magenta}Arch AUR${c_reset}   (Comunidade, via yay)"
-            echo -n -e "Escolha [1/2/3]: "
-            read escolha
-
-            local target=""
-            local cmd=""
-
+            echo -e "\n${c_text}Onde instalar '${c_yellow}${pkg}${c_text}'?${c_reset}"
+            echo -e "  [1] ${c_cyan}Arch${c_reset} (pacman)  [2] ${c_red}Debian${c_reset} (apt)  [3] ${c_magenta}AUR${c_reset} (yay)"
+            echo -n -e "Escolha [1/2/3]: "; read escolha
             if [[ "$escolha" == "1" ]]; then
                 _criar_ecossistema "arch"
-                target="gear-arch"
-                cmd="sudo pacman -Syu --noconfirm $pkg"
+                distrobox enter "gear-arch" -- sh -c "sudo pacman -Syu --noconfirm $pkg"
+                distrobox enter "gear-arch" -- distrobox-export --app "$pkg" 2>/dev/null
             elif [[ "$escolha" == "2" ]]; then
                 _criar_ecossistema "debian"
-                target="gear-debian"
-                cmd="sudo apt update && sudo apt install -y $pkg"
+                distrobox enter "gear-debian" -- sh -c "sudo apt update && sudo apt install -y $pkg"
+                distrobox enter "gear-debian" -- distrobox-export --app "$pkg" 2>/dev/null
             elif [[ "$escolha" == "3" ]]; then
                 _criar_ecossistema "arch"
-                target="gear-arch"
-                cmd="if ! command -v yay &> /dev/null; then echo -e '\nInstalando suporte ao AUR (yay)...'; git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin && cd /tmp/yay-bin && makepkg -si --noconfirm && rm -rf /tmp/yay-bin; fi && yay -S --noconfirm $pkg"
-            else
-                echo -e "${c_alert}Opção inválida. Cancelando.${c_reset}"
-                return 1
+                distrobox enter "gear-arch" -- sh -c "command -v yay || (git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin && cd /tmp/yay-bin && makepkg -si --noconfirm); yay -S --noconfirm $pkg"
+                distrobox enter "gear-arch" -- distrobox-export --app "$pkg" 2>/dev/null
             fi
-
-            echo -e "\n${c_cyan}::${c_text} Processando '${pkg}' no subsistema ${target}...${c_reset}"
-            distrobox enter "$target" -- sh -c "$cmd"
-
-            echo -e "\n${c_cyan}::${c_text} Integrando '${pkg}' ao GearOS...${c_reset}"
-            distrobox enter "$target" -- distrobox-export --app "$pkg" 2>/dev/null
-            distrobox enter "$target" -- distrobox-export --bin "/usr/bin/$pkg" --export-path "$HOME/.local/bin" 2>/dev/null
-
-            echo -e "${c_green}Concluído! O aplicativo '${pkg}' está integrado ao seu sistema.${c_reset}\n"
             ;;
         update)
-            echo -e "\n${c_cyan}::${c_text} Verificando atualizações do sistema (bootc)...${c_reset}"
-            if ! sudo bootc upgrade 2>&1; then
-                echo -e "\n${c_alert}Falha no upgrade. Se o repositório for privado, configure o token:${c_reset}"
-                echo -e "Crie o arquivo /etc/ostree/auth.json com o seu token do GitHub."
-                return 1
-            fi
-            echo -e "${c_green}Sistema atualizado com sucesso! Reinicie para aplicar (ou use gear rollback para voltar).${c_reset}\n"
+            echo -e "\n${c_cyan}::${c_text} Atualizando sistema...${c_reset}"
+            sudo bootc upgrade && echo -e "${c_green}Pronto! Reinicie para aplicar.${c_reset}"
             ;;
         rollback)
-            echo -e "\n${c_cyan}::${c_text} Revertendo para a versão anterior do sistema...${c_reset}"
+            echo -e "\n${c_cyan}::${c_text} Revertendo...${c_reset}"
             sudo bootc rollback
-            echo -e "${c_green}Reversão concluída. Reinicie o sistema para aplicar.${c_reset}\n"
             ;;
         status)
-            echo -e "\n${c_cyan}::${c_text} Status da árvore imutável (OSTree/bootc):${c_reset}"
             sudo bootc status
             ;;
         clean)
-            echo -e "\n${c_cyan}::${c_text} Manutenção e Limpeza do Sistema...${c_reset}"
-            echo -e "${c_sub}➜ Removendo containers e imagens órfãs...${c_reset}"
+            echo -e "\n${c_cyan}::${c_text} Limpando sistema...${c_reset}"
             sudo podman system prune -f
-            echo -e "${c_sub}➜ Limpando logs antigos...${c_reset}"
             sudo journalctl --vacuum-time=3d
-            echo -e "${c_green}Limpeza concluída com sucesso!${c_reset}\n"
+            echo -e "${c_green}Limpeza concluída!${c_reset}"
             ;;
         menu|"")
             clear
-            
-            # Captura de dados à prova de falhas
             local os_name=$(grep "^PRETTY_NAME=" /etc/os-release 2>/dev/null | cut -d'"' -f2 || echo "GearOS")
             local kernel_ver=$(uname -r 2>/dev/null || echo "N/A")
             local cpu_name=$(lscpu 2>/dev/null | grep "Model name:" | sed 's/Model name:\s*//' || echo "N/A")
-            local ram_total=$(free -m 2>/dev/null | awk '/Mem:/ {print $2}')
-            local ram_used=$(free -m 2>/dev/null | awk '/Mem:/ {print $3}')
-            
-            if [[ -z "$ram_total" ]]; then
-                ram_total=$(awk '/MemTotal/ {printf "%d", $2/1024}' /proc/meminfo 2>/dev/null || echo "0")
-                ram_used=$(awk '/MemAvailable/ {printf "%d", $2/1024}' /proc/meminfo 2>/dev/null || echo "0")
-                ram_used=$((ram_total - ram_used))
-            fi
-
+            local ram_total=$(awk '/MemTotal/ {printf "%d", $2/1024}' /proc/meminfo 2>/dev/null || echo "0")
+            local ram_avail=$(awk '/MemAvailable/ {printf "%d", $2/1024}' /proc/meminfo 2>/dev/null || echo "0")
+            local ram_used=$((ram_total - ram_avail))
             echo -e ""
             echo -e "${c_red}   ___ ___   _   ___ ${c_yellow}  ___  ___ ${c_reset}"
             echo -e "${c_red}  / __| __| /_\ | _ \${c_yellow} / _ \\/ __|${c_reset}"
@@ -383,16 +306,16 @@ gear() {
             echo -e " ${c_magenta}◈ CPU:${c_text}     ${cpu_name}"
             echo -e " ${c_cyan}◈ RAM:${c_text}     ${ram_used} MB / ${ram_total} MB"
             echo -e " ${c_sub}───────────────────────────────────────────${c_reset}"
-            echo -e " ${c_text}Gerenciador Nativo (CLI):${c_reset}"
-            echo -e "  ${c_cyan}gear install ${c_yellow}<app>${c_reset}  Instala apps isolados (Arch/AUR/Debian/.deb)"
-            echo -e "  ${c_green}gear update${c_reset}         Aplica a imagem OS mais recente"
-            echo -e "  ${c_red}gear rollback${c_reset}       Reverte para a imagem anterior"
-            echo -e "  ${c_magenta}gear status${c_reset}         Inspeciona a árvore do bootc"
-            echo -e "  ${c_blue}gear clean${c_reset}          Manutenção e otimização de disco"
+            echo -e " ${c_text}Comandos disponíveis:${c_reset}"
+            echo -e "  ${c_cyan}gear install ${c_yellow}<app>${c_reset}  Instala apps (Arch/AUR/Debian/.deb)"
+            echo -e "  ${c_green}gear update${c_reset}         Atualiza o sistema"
+            echo -e "  ${c_red}gear rollback${c_reset}       Reverte para versão anterior"
+            echo -e "  ${c_magenta}gear status${c_reset}         Status do bootc"
+            echo -e "  ${c_blue}gear clean${c_reset}          Limpeza do sistema"
             echo -e ""
             ;;
         *)
-            echo -e "${c_alert}Erro: Subcomando desconhecido ('$1')${c_reset}"
+            echo -e "${c_alert}Subcomando desconhecido: $1${c_reset}"
             echo -e "Uso: gear {install|update|rollback|status|clean|menu}"
             ;;
     esac
@@ -405,34 +328,28 @@ HISTFILE=~/.zsh_history
 setopt HIST_IGNORE_DUPS
 setopt SHARE_HISTORY
 
-# Oh My Zsh Config
+# Oh My Zsh
 export ZSH="/usr/share/oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
-
 source $ZSH/oh-my-zsh.sh
 
 # PATH
 export PATH="$HOME/.local/bin:$PATH"
 
-# Powerlevel10k Config
+# Powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Autocompletion
 autoload -Uz compinit && compinit
 
-# ==========================================
-# AUTOSTART DO GEAR MENU
-# ==========================================
-if [[ $- == *i* ]]; then
-    gear menu
-fi
+# Autostart gear menu em terminais interativos
+[[ $- == *i* ]] && gear menu
 ZSHRC
 
-# Cria um arquivo .p10k.zsh padrão para evitar o assistente de configuração no primeiro login
+# P10k config padrão (evita wizard no primeiro login)
 cat > /etc/skel/.p10k.zsh << 'P10KCFG'
-# Arquivo gerado automaticamente pelo GearOS para suprimir o wizard do Powerlevel10k.
-# Para reconfigurar o terminal, execute 'p10k configure'.
+# Para reconfigurar execute: p10k configure
 POWERLEVEL9K_MODE=nerdfont-v3
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs time)

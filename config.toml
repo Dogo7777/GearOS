@@ -1,6 +1,6 @@
 [customizations.installer.modules]
 enable = [
-  "org.fedoraproject.Anaconda.Modules.Localization", 
+  "org.fedoraproject.Anaconda.Modules.Localization",
   "org.fedoraproject.Anaconda.Modules.Storage",
   "org.fedoraproject.Anaconda.Modules.Users",
   "org.fedoraproject.Anaconda.Modules.Network",
@@ -11,34 +11,19 @@ enable = [
 
 [customizations.installer.kickstart]
 contents = """
-# 1. Configurações de Localização
-#lang pt_BR.UTF-8
-#keyboard br-abnt2
-#timezone America/Sao_Paulo
+graphical
 
-# 2. Particionamento Dinâmico (O Esquema Supremo)
 clearpart --all --initlabel
 zerombr
 
-# Boot EFI / BIOS
-reqpart --add-boot
-
-# Raiz (/) em EXT4 - 24 GB Fixos. 
+part /boot/efi --fstype=efi --size=600 --fsoptions="umask=0077,shortname=winnt"
+part /boot --fstype=ext4 --size=1024
 part / --fstype=ext4 --size=24576
-
-# Partição física gigante pegando TODO o resto do disco (--grow)
 part btrfs.1 --size=1000 --grow
 
-# Cria o Pool Btrfs em cima dessa partição gigante
 btrfs none --label=gearos_data btrfs.1
-
-# Subvolume /var (Supremo)
 btrfs /var --subvol --name=var gearos_data
-
-# Subvolume /home
 btrfs /home --subvol --name=home gearos_data
 
-# 3. Comportamento do Instalador
-graphical
 reboot
 """
