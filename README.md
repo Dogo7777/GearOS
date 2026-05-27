@@ -29,9 +29,3 @@ Esqueça o famoso "meu Arch quebrou após um update". Com o GearOS, você atuali
 - ⚡ **Zsh P10K Tunado:** Terminal lindo com Powerlevel10k, autosuggestions e o menu interativo `gear` que abre no primeiro login.
 
 ---
-
-### 🚀 O Comando `gear`
-
-O coração do GearOS é a ferramenta de CLI `gear`. Ela gerencia tudo, desde a instalação de softwares até a manutenção do sistema.
-
-<div align="center">
