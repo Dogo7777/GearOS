@@ -1,6 +1,5 @@
 [customizations.installer.modules]
 enable = [
-  "org.fedoraproject.Anaconda.Modules.Localization",
   "org.fedoraproject.Anaconda.Modules.Storage",
   "org.fedoraproject.Anaconda.Modules.Users",
   "org.fedoraproject.Anaconda.Modules.Network",
@@ -12,18 +11,4 @@ enable = [
 [customizations.installer.kickstart]
 contents = """
 graphical
-
-clearpart --all --initlabel
-zerombr
-
-part /boot/efi --fstype=efi --size=600 --fsoptions="umask=0077,shortname=winnt"
-part /boot --fstype=ext4 --size=1024
-part / --fstype=ext4 --size=24576
-part btrfs.1 --size=1000 --grow
-
-btrfs none --label=gearos_data btrfs.1
-btrfs /var --subvol --name=var gearos_data
-btrfs /home --subvol --name=home gearos_data
-
-reboot
 """
