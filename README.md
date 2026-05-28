@@ -1,31 +1,58 @@
-**O Sistema Operacional Imutável Otimizado para Gamers e Power Users.**
+# ⚙️ GearOS
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Dogo7777/GearOS/build.yml?style=for-the-badge&color=ff6600)](https://github.com/Dogo7777/GearOS/actions)
-[![Based on](https://img.shields.io/badge/Base-Fedora%20Bootc-3b6eb4?style=for-the-badge&logo=fedora&logoColor=white)](https://bootc.org/)
-[![Kernel](https://img.shields.io/badge/Kernel-CachyOS-b81010?style=for-the-badge&logo=linux&logoColor=white)](https://copr.fedorainfracloud.org/coprs/bieszczaders/kernel-cachyos/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+![GearOS Banner](https://img.shields.io/badge/OS-GearOS-FF8C00?style=for-the-badge&logo=linux&logoColor=white)
+![Base](https://img.shields.io/badge/Base-Fedora_Bootc-294172?style=for-the-badge&logo=fedora&logoColor=white)
+![Desktop Environment](https://img.shields.io/badge/KDE_Plasma-Wayland-1D99F3?style=for-the-badge&logo=kde&logoColor=white)
 
-</div>
+O **GearOS** é uma distribuição Linux imutável e de alto desempenho, baseada na tecnologia Fedora `bootc`. Foi desenhada para oferecer uma experiência "inquebrável" na raiz do sistema, transferindo a instalação de aplicações e ferramentas de desenvolvimento para ecossistemas de contentores isolados (Distrobox e Podman).
 
----
-
-### 🎯 O que é o GearOS?
-
-O GearOS é uma distribuição Linux imutável baseada no **Fedora Bootc**, projetada para oferecer a estabilidade de um sistema apenas-leitura (como o Steam Deck ou o Fedora Silverblue) sem abrir mão da flexibilidade que os usuários de Arch Linux amam. 
-
-A filosofia é simples: **O sistema base é sagrado e inquebrável. Os aplicativos vivem em ecossistemas isolados.**
-
-Esqueça o famoso "meu Arch quebrou após um update". Com o GearOS, você atualiza o sistema inteiro com um comando. Se algo quebrar, você volta no tempo com outro.
+Perfeito para *gaming*, desenvolvimento de software (C, C++, C#) e alojamento de servidores.
 
 ---
 
-### ✨ Destaques e Funcionalidades
+## ✨ Características Principais
 
-- 🛡️ **Imutabilidade Nativa:** Baseado em `bootc`. Atualizações atômicas e reversões instantâneas (`gear rollback`). Seu `/usr` é inviolável.
-- 🎮 **Kernel CachyOS:** Compilado com otimizações agressivas para reduzir latência e aumentar os FPS em jogos.
-- 🐚 **Gear CLI:** Um gerenciador de ecossistemas próprio. Instale pacotes do Arch, AUR ou Debian de forma isolada usando Distrobox, sem sujar o sistema base.
-- 🎨 **Desktop Híbrido Perfeito:** KDE Plasma como shell principal, integrado elegantemente com aplicativos GNOME (Nautilus, Ptyxis, GNOME Software).
-- 🧠 **Particionamento Inteligente:** Raiz (`/`) em EXT4 para estabilidade máxima do bootc, enquanto `/var` e `/home` utilizam Btrfs dinâmico para flexibilidade e snapshots.
-- ⚡ **Zsh P10K Tunado:** Terminal lindo com Powerlevel10k, autosuggestions e o menu interativo `gear` que abre no primeiro login.
+* 🛡️ **Raiz Imutável (OSTree/Bootc):** O sistema operativo central é atualizado de forma atómica. Se uma atualização falhar, pode simplesmente reverter (rollback) para o estado anterior.
+* 📦 **Ecossistema de Contentores:** Não suje o seu sistema anfitrião. Instale qualquer software através do Arch Linux (AUR), Debian ou Homebrew de forma nativa e invisível.
+* 🎮 **Pronto para Gaming:** * Drivers Mesa, Vulkan e suporte a 32-bits (`.i686`) pré-instalados.
+  * Otimizações nativas: `gamemode`, `gamescope` e `mangohud`.
+  * Áudio Pipewire de baixa latência (compatível com jogos clássicos e Proton).
+  * Repositórios RPM Fusion ativados de fábrica com codecs completos (H.264, HEVC, etc.).
+* 💻 **Interface de Nível Premium:** KDE Plasma (Wayland) otimizado com o gestor de sessão SDDM, terminal Ptyxis integrado no Nautilus, tema de ícones Papirus e configuração global *AurowaitaDark*.
+* 🚀 **Terminal com Superpoderes:** Zsh como *shell* padrão, artilhado com Oh My Zsh, Powerlevel10k (Fonte MesloLGS NF) e realce de sintaxe.
 
 ---
+
+## 🛠️ O Gestor Nativo: `gear` CLI
+
+O coração do sistema é o comando `gear`, uma interface de linha de comandos desenvolvida especificamente para facilitar a gestão da imutabilidade e a instalação de software sem complicações.
+
+Ao abrir o terminal, é recebido pelo **Painel GearOS**. A partir daí, pode usar:
+
+### `gear install <pacote>`
+Instala aplicações num ecossistema isolado e exporta automaticamente os ícones e binários para o seu menu. Suporta múltiplos motores:
+1. **Arch Linux:** Repositórios oficiais via `pacman`.
+2. **Debian:** Estabilidade via `apt`.
+3. **AUR (Arch User Repository):** Acesso a qualquer software comunitário via `yay`.
+4. **Homebrew:** Ferramentas CLI nativas.
+*Bónus:* Pode simplesmente executar `gear install ./ficheiro.deb` e o sistema trata de tudo automaticamente!
+
+### `gear update`
+Sincroniza o sistema de forma transparente com a imagem mais recente do `bootc` no GitHub Container Registry.
+
+### `gear clean`
+Faz a manutenção automática do sistema, removendo contentores Podman órfãos e limpando *logs* antigos para libertar espaço no disco.
+
+### `gear status`
+Inspeciona o estado da sua árvore imutável (OSTree) e verifica as implementações atuais do sistema.
+
+---
+
+## 🏗️ Construção e Instalação
+
+O GearOS é construído a partir de um `Containerfile`. Para gerar a sua própria imagem ou ISO:
+
+1. Clone o repositório:
+   ```bash
+   git clone [https://github.com/SEU_UTILIZADOR/GearOS.git](https://github.com/SEU_UTILIZADOR/GearOS.git)
+   cd GearOS
