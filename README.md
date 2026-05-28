@@ -56,3 +56,6 @@ O GearOS é construído a partir de um `Containerfile`. Para gerar a sua própri
    ```bash
    git clone [https://github.com/SEU_UTILIZADOR/GearOS.git](https://github.com/SEU_UTILIZADOR/GearOS.git)
    cd GearOS
+   ./build.sh
+
+(Nota: O script utiliza o Podman e o osbuild/mkosi nos bastidores para gerar um ficheiro ISO inicializável).
