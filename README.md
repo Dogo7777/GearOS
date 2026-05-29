@@ -4,16 +4,18 @@
 ![Base](https://img.shields.io/badge/Base-Fedora_Bootc-294172?style=for-the-badge&logo=fedora&logoColor=white)
 ![Desktop Environment](https://img.shields.io/badge/KDE_Plasma-Wayland-1D99F3?style=for-the-badge&logo=kde&logoColor=white)
 
-O **GearOS** é um remix Linux imutável e de alto desempenho, baseada na tecnologia Fedora `bootc`. Foi desenhada para oferecer uma experiência "inquebrável" na raiz do sistema, transferindo a instalação de aplicações e ferramentas de desenvolvimento para ecossistemas de contentores isolados (Distrobox e Podman).
+O **GearOS** é uma distribuição Linux imutável e de alto desempenho, baseada na tecnologia Fedora `bootc`. Foi desenhada para oferecer uma experiência "inquebrável" na raiz do sistema, transferindo a instalação de aplicações e ferramentas de desenvolvimento para ecossistemas de contentores isolados (Distrobox e Podman) e gestores de pacotes em espaço de utilizador.
 
-Perfeito para mim.
+Perfeito para *mim*.
 
 ---
 
 ## ✨ Características Principais
 
+* 🧹 **Totalmente Limpo (Zero Bloatware):** O sistema vem apenas com o essencial. Sem pacotes inúteis, telemetria excessiva, ou softwares pré-instalados que consomem memória em segundo plano. O desempenho e o espaço em disco são totalmente seus.
 * 🛡️ **Raiz Imutável (OSTree/Bootc):** O sistema operativo central é atualizado de forma atómica. Se uma atualização falhar, pode simplesmente reverter (rollback) para o estado anterior.
-* 📦 **Ecossistema de Contentores:** Não suje o seu sistema anfitrião. Instale qualquer software através do Arch Linux (AUR), Debian ou Homebrew de forma nativa e invisível.
+* 🍺 **Homebrew Nativo:** Ferramentas de linha de comandos à distância de um clique. O gestor de pacotes **Homebrew** está totalmente integrado no sistema. Pode instalar milhares de pacotes utilitários nativamente, sem alterar a raiz imutável e sem precisar de permissões de administrador (`sudo`).
+* 📦 **Ecossistema de Contentores:** Não suje o seu sistema anfitrião. Instale qualquer software gráfico através do Arch Linux (AUR) ou Debian de forma transparente e invisível usando o Distrobox.
 * 🎮 **Pronto para Gaming:** * Drivers Mesa, Vulkan e suporte a 32-bits (`.i686`) pré-instalados.
   * Otimizações nativas: `gamemode`, `gamescope` e `mangohud`.
   * Áudio Pipewire de baixa latência (compatível com jogos clássicos e Proton).
@@ -36,7 +38,7 @@ Instala aplicações num ecossistema isolado e exporta automaticamente os ícone
 1. **Arch Linux:** Repositórios oficiais via `pacman`.
 2. **Debian:** Estabilidade via `apt`.
 3. **AUR (Arch User Repository):** Acesso a qualquer software comunitário via `yay`.
-4. **Homebrew:** Ferramentas CLI nativas.
+4. **Homebrew:** Ferramentas CLI nativas via `brew`.
 *Bónus:* Pode simplesmente executar `gear install ./ficheiro.deb` e o sistema trata de tudo automaticamente, removendo até os sufixos de contentor dos ícones exportados!
 
 ### `gear update`
@@ -58,3 +60,5 @@ O GearOS é construído a partir de um `Containerfile`. Para gerar a sua própri
    ```bash
    git clone [https://github.com/SEU_UTILIZADOR/GearOS.git](https://github.com/SEU_UTILIZADOR/GearOS.git)
    cd GearOS
+   ./build.sh
+  (Nota: O script utiliza o Podman e o osbuild/mkosi nos bastidores para gerar um ficheiro ISO inicializável).
