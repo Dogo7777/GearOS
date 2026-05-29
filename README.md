@@ -8,8 +8,10 @@ O **GearOS** é uma distribuição Linux imutável e de alto desempenho, baseada
 
 Perfeito para **mim**.
 ---
+
 ## Donwload
 https://drive.google.com/drive/folders/1Zu8d_wdj6n0vVqA5gAJ7c8ezOixj9XVm?usp=sharing
+
 ---
 
 ## ✨ Características Principais
