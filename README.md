@@ -8,7 +8,9 @@ O **GearOS** é uma "distribuição" Linux imutável e de alto desempenho, basea
 
 Perfeito para **mim**.
 
+
 ---
+
 
 ## ✨ Características Principais
 
@@ -25,7 +27,9 @@ Perfeito para **mim**.
   * Tema de ícones Papirus e integração nativa do terminal Ptyxis diretamente no menu de contexto do Nautilus.
 *  **Terminal com Superpoderes:** Zsh como *shell* padrão, artilhado com Oh My Zsh, Powerlevel10k (Fonte MesloLGS NF) e realce de sintaxe.
 
+
 ---
+
 
 ## 🛠️ O Gestor Nativo: `gear` CLI
 
@@ -52,6 +56,16 @@ Inspeciona o estado da sua árvore imutável (OSTree) e verifica as implementaç
 
 ---
 
+## 🤔 Curiosidades
+
+Não, eu não sei mudar a logo do plymouth e do anaconda, eu tentei e não vai kkk.
+
+E um projeto pessoal mesmo, funciona para mim, eu gosto de sistema limpo assim,
+e do modo que eu imaginaria o fedora kinoite perfeito.
+
+---
+
+
 ## 🚫 Defeitos e avisos!!!
 
 O GearOS tem defeitos conhecidos, teclado e timezone nao vem configurado, configure nas configurações do proprio kde, não mecha no que não deve.
@@ -62,14 +76,6 @@ https://drive.google.com/drive/folders/1Zu8d_wdj6n0vVqA5gAJ7c8ezOixj9XVm?usp=sha
 
 ---
 
-## 🤔 Curiosidades
-
-Não, eu não sei mudar a logo do plymouth e do anaconda, eu tentei e não vai kkk.
-
-E um projeto pessoal mesmo, funciona para mim, eu gosto de sistema limpo assim,
-e do modo que eu imaginaria o fedora kinoite perfeito.
-
----
 
 ## 🏗️ Construção da sua propria versão
 
