@@ -55,6 +55,10 @@ Faz a manutenção automática do sistema, removendo contentores Podman órfãos
 Inspeciona o estado da sua árvore imutável (OSTree) e verifica as implementações atuais do sistema.
 
 ---
+## 🚫 Defeitos
+
+O GearOS tem defeitos conhecidos, teclado e timezone nao vem configurado, configure nas configurações do proprio kde.
+---
 
 ## 🏗️ Construção e Instalação
 
