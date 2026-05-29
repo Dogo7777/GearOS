@@ -14,7 +14,7 @@ Perfeito para **mim**.
 
 *  **Totalmente Limpo (Zero Bloatware):** O sistema vem apenas com o essencial. Sem pacotes inúteis, ou softwares pré-instalados que consomem memória em segundo plano. O desempenho e o espaço em disco são totalmente seus.
 *  **Raiz Imutável (OSTree/Bootc):** O sistema operativo central é atualizado de forma atómica. Se uma atualização falhar, pode simplesmente reverter (rollback) para o estado anterior.
-*  **Homebrew Nativo:** Ferramentas de linha de comandos à distância de um clique. O gestor de pacotes **Homebrew** está totalmente integrado no sistema. Pode instalar milhares de pacotes utilitários nativamente, sem alterar a raiz imutável e sem precisar de permissões de administrador (`sudo`).
+*  **Homebrew Nativo:** Ferramentas de linha de comandos à distância de um clique. O gestor de pacotes *Homebrew* está totalmente integrado no sistema. Pode instalar milhares de pacotes utilitários nativamente, sem alterar a raiz imutável e sem precisar de permissões de administrador (`sudo`).
 *  **Ecossistema de Contentores:** Não suje o seu sistema anfitrião. Instale qualquer software gráfico através do Arch Linux (AUR) ou Debian de forma transparente e invisível usando o Distrobox.
 *  **Pronto para Gaming:** * Drivers Mesa, Vulkan e suporte a 32-bits (`.i686`) pré-instalados.
   * Otimizações nativas: `gamemode`, `gamescope` e `mangohud`, mas `nao vai criar fps`.
