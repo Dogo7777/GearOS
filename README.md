@@ -12,18 +12,18 @@ Perfeito para *mim*.
 
 ## ✨ Características Principais
 
-* 🧹 **Totalmente Limpo (Zero Bloatware):** O sistema vem apenas com o essencial. Sem pacotes inúteis, telemetria excessiva, ou softwares pré-instalados que consomem memória em segundo plano. O desempenho e o espaço em disco são totalmente seus.
-* 🛡️ **Raiz Imutável (OSTree/Bootc):** O sistema operativo central é atualizado de forma atómica. Se uma atualização falhar, pode simplesmente reverter (rollback) para o estado anterior.
-* 🍺 **Homebrew Nativo:** Ferramentas de linha de comandos à distância de um clique. O gestor de pacotes **Homebrew** está totalmente integrado no sistema. Pode instalar milhares de pacotes utilitários nativamente, sem alterar a raiz imutável e sem precisar de permissões de administrador (`sudo`).
-* 📦 **Ecossistema de Contentores:** Não suje o seu sistema anfitrião. Instale qualquer software gráfico através do Arch Linux (AUR) ou Debian de forma transparente e invisível usando o Distrobox.
-* 🎮 **Pronto para Gaming:** * Drivers Mesa, Vulkan e suporte a 32-bits (`.i686`) pré-instalados.
+*  **Totalmente Limpo (Zero Bloatware):** O sistema vem apenas com o essencial. Sem pacotes inúteis, telemetria excessiva, ou softwares pré-instalados que consomem memória em segundo plano. O desempenho e o espaço em disco são totalmente seus.
+*  **Raiz Imutável (OSTree/Bootc):** O sistema operativo central é atualizado de forma atómica. Se uma atualização falhar, pode simplesmente reverter (rollback) para o estado anterior.
+*  **Homebrew Nativo:** Ferramentas de linha de comandos à distância de um clique. O gestor de pacotes **Homebrew** está totalmente integrado no sistema. Pode instalar milhares de pacotes utilitários nativamente, sem alterar a raiz imutável e sem precisar de permissões de administrador (`sudo`).
+*  **Ecossistema de Contentores:** Não suje o seu sistema anfitrião. Instale qualquer software gráfico através do Arch Linux (AUR) ou Debian de forma transparente e invisível usando o Distrobox.
+*  **Pronto para Gaming:** * Drivers Mesa, Vulkan e suporte a 32-bits (`.i686`) pré-instalados.
   * Otimizações nativas: `gamemode`, `gamescope` e `mangohud`.
   * Áudio Pipewire de baixa latência (compatível com jogos clássicos e Proton).
   * Repositórios RPM Fusion ativados de fábrica com codecs completos (H.264, HEVC, etc.).
-* 💻 **Interface de Nível Premium:** * KDE Plasma (Wayland) otimizado com o gestor de sessão SDDM.
+*  **Interface de Nível Premium:** * KDE Plasma (Wayland) otimizado com o gestor de sessão SDDM.
   * Decorações de janela **[Aurowaita](https://github.com/sabaneko-run/Aurowaita)** ativadas de fábrica (cantos perfeitamente arredondados, estética macOS/GNOME moderno).
   * Tema de ícones Papirus e integração nativa do terminal Ptyxis diretamente no menu de contexto do Nautilus.
-* 🚀 **Terminal com Superpoderes:** Zsh como *shell* padrão, artilhado com Oh My Zsh, Powerlevel10k (Fonte MesloLGS NF) e realce de sintaxe.
+*  **Terminal com Superpoderes:** Zsh como *shell* padrão, artilhado com Oh My Zsh, Powerlevel10k (Fonte MesloLGS NF) e realce de sintaxe.
 
 ---
 
