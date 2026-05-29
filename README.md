@@ -52,10 +52,9 @@ Inspeciona o estado da sua árvore imutável (OSTree) e verifica as implementaç
 
 ---
 
-## 🚫 Defeitos
+## 🚫 Defeitos e avisos!!!
 
-O GearOS tem defeitos conhecidos, teclado e timezone nao vem configurado, configure nas configurações do proprio kde.
-
+O GearOS tem defeitos conhecidos, teclado e timezone nao vem configurado, configure nas configurações do proprio kde, não mecha no que não deve.
 
 **Donwload**
 https://drive.google.com/drive/folders/1Zu8d_wdj6n0vVqA5gAJ7c8ezOixj9XVm?usp=sharing
@@ -63,7 +62,16 @@ https://drive.google.com/drive/folders/1Zu8d_wdj6n0vVqA5gAJ7c8ezOixj9XVm?usp=sha
 
 ---
 
-## 🏗️ Construção e Instalação
+## 🤔 Curiosidades
+
+Não, eu não sei mudar a logo do plymouth e do anaconda, eu tentei e não vai kkk.
+
+E um projeto pessoal mesmo, funciona para mim, eu gosto de sistema limpo assim,
+e do modo que eu imaginaria o fedora kinoite perfeito.
+
+---
+
+## 🏗️ Construção da sua propria versão
 
 O GearOS é construído a partir de um `Containerfile`. Para gerar a sua própria imagem ou ISO:
 
