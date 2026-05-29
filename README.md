@@ -7,7 +7,9 @@
 O **GearOS** é uma distribuição Linux imutável e de alto desempenho, baseada na tecnologia Fedora `bootc`. Foi desenhada para oferecer uma experiência "inquebrável" na raiz do sistema, transferindo a instalação de aplicações e ferramentas de desenvolvimento para ecossistemas de contentores isolados (Distrobox e Podman) e gestores de pacotes em espaço de utilizador.
 
 Perfeito para **mim**.
-
+---
+## Donwload
+https://drive.google.com/drive/folders/1Zu8d_wdj6n0vVqA5gAJ7c8ezOixj9XVm?usp=sharing
 ---
 
 ## ✨ Características Principais
