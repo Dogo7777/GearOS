@@ -70,6 +70,8 @@ e do modo que eu imaginaria o fedora kinoite perfeito.
 
 O GearOS tem defeitos conhecidos, teclado e timezone nao vem configurado, configure nas configurações do proprio kde, não mecha no que não deve.
 
+**NÂO TEM DRIVER NVIDIA**
+
 **Donwload**
 https://drive.google.com/drive/folders/1Zu8d_wdj6n0vVqA5gAJ7c8ezOixj9XVm?usp=sharing
 
