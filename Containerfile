@@ -386,7 +386,7 @@ gear() {
             local ram_used=$((ram_total - ram_avail))
             echo -e ""
             echo -e " ${c_sub}╭───────────────────────────────────────────╮${c_reset}"
-            echo -e " ${c_sub}│${c_text}  Bem-vindo ao seu ecossistema.            ${c_sub}│${c_reset}"
+            echo -e " ${c_sub}│${c_text}  Bem-vindo ao seu ecossistema.           ${c_sub}│${c_reset}"
             echo -e " ${c_sub}╰───────────────────────────────────────────╯${c_reset}"
             echo -e " ${c_cyan}◈ SO:${c_text}      ${os_name}"
             echo -e " ${c_cyan}◈ Kernel:${c_text}  ${kernel_ver}"
