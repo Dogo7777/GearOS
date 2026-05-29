@@ -3,11 +3,10 @@
 ![GearOS Banner](https://img.shields.io/badge/OS-GearOS-FF8C00?style=for-the-badge&logo=linux&logoColor=white)
 ![Base](https://img.shields.io/badge/Base-Fedora_Bootc-294172?style=for-the-badge&logo=fedora&logoColor=white)
 ![Desktop Environment](https://img.shields.io/badge/KDE_Plasma-Wayland-1D99F3?style=for-the-badge&logo=kde&logoColor=white)
-! [Themes] (https://github.com/sabaneko-run/Aurowaita)
 
-O **GearOS** é uma distribuição Linux imutável e de alto desempenho, baseada na tecnologia Fedora `bootc`. Foi desenhada para oferecer uma experiência "inquebrável" na raiz do sistema, transferindo a instalação de aplicações e ferramentas de desenvolvimento para ecossistemas de contentores isolados (Distrobox e Podman).
+O **GearOS** é um remix Linux imutável e de alto desempenho, baseada na tecnologia Fedora `bootc`. Foi desenhada para oferecer uma experiência "inquebrável" na raiz do sistema, transferindo a instalação de aplicações e ferramentas de desenvolvimento para ecossistemas de contentores isolados (Distrobox e Podman).
 
-Perfeito para *gaming*, desenvolvimento de software (C, C++, C#) e alojamento de servidores.
+Perfeito para mim.
 
 ---
 
@@ -19,7 +18,9 @@ Perfeito para *gaming*, desenvolvimento de software (C, C++, C#) e alojamento de
   * Otimizações nativas: `gamemode`, `gamescope` e `mangohud`.
   * Áudio Pipewire de baixa latência (compatível com jogos clássicos e Proton).
   * Repositórios RPM Fusion ativados de fábrica com codecs completos (H.264, HEVC, etc.).
-* 💻 **Interface de Nível Premium:** KDE Plasma (Wayland) otimizado com o gestor de sessão SDDM, terminal Ptyxis integrado no Nautilus, tema de ícones Papirus e configuração global *AurowaitaDark*.
+* 💻 **Interface de Nível Premium:** * KDE Plasma (Wayland) otimizado com o gestor de sessão SDDM.
+  * Decorações de janela **[Aurowaita](https://github.com/sabaneko-run/Aurowaita)** ativadas de fábrica (cantos perfeitamente arredondados, estética macOS/GNOME moderno).
+  * Tema de ícones Papirus e integração nativa do terminal Ptyxis diretamente no menu de contexto do Nautilus.
 * 🚀 **Terminal com Superpoderes:** Zsh como *shell* padrão, artilhado com Oh My Zsh, Powerlevel10k (Fonte MesloLGS NF) e realce de sintaxe.
 
 ---
@@ -36,10 +37,10 @@ Instala aplicações num ecossistema isolado e exporta automaticamente os ícone
 2. **Debian:** Estabilidade via `apt`.
 3. **AUR (Arch User Repository):** Acesso a qualquer software comunitário via `yay`.
 4. **Homebrew:** Ferramentas CLI nativas.
-*Bónus:* Pode simplesmente executar `gear install ./ficheiro.deb` e o sistema trata de tudo automaticamente!
+*Bónus:* Pode simplesmente executar `gear install ./ficheiro.deb` e o sistema trata de tudo automaticamente, removendo até os sufixos de contentor dos ícones exportados!
 
 ### `gear update`
-Sincroniza o sistema de forma transparente com a imagem mais recente do `bootc` no GitHub Container Registry.
+Sincroniza o sistema de forma transparente com a imagem mais recente do `bootc` no GitHub Container Registry (suporta autenticação automática via `auth.json`).
 
 ### `gear clean`
 Faz a manutenção automática do sistema, removendo contentores Podman órfãos e limpando *logs* antigos para libertar espaço no disco.
@@ -57,6 +58,3 @@ O GearOS é construído a partir de um `Containerfile`. Para gerar a sua própri
    ```bash
    git clone [https://github.com/SEU_UTILIZADOR/GearOS.git](https://github.com/SEU_UTILIZADOR/GearOS.git)
    cd GearOS
-   ./build.sh
-
-(Nota: O script utiliza o Podman e o osbuild/mkosi nos bastidores para gerar um ficheiro ISO inicializável).
