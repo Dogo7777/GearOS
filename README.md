@@ -4,7 +4,7 @@
 ![Base](https://img.shields.io/badge/Base-Fedora_Bootc-294172?style=for-the-badge&logo=fedora&logoColor=white)
 ![Desktop Environment](https://img.shields.io/badge/KDE_Plasma-Wayland-1D99F3?style=for-the-badge&logo=kde&logoColor=white)
 
-O **GearOS** é uma distribuição Linux imutável e de alto desempenho, baseada na tecnologia Fedora `bootc`. Foi desenhada para oferecer uma experiência "inquebrável" na raiz do sistema, transferindo a instalação de aplicações e ferramentas de desenvolvimento para ecossistemas de contentores isolados (Distrobox e Podman) e gestores de pacotes em espaço de utilizador.
+O **GearOS** é uma "distribuição" Linux imutável e de alto desempenho, baseada na tecnologia Fedora `bootc`. Foi desenhada para oferecer uma experiência "inquebrável" na raiz do sistema, transferindo a instalação de aplicações e ferramentas de desenvolvimento para ecossistemas de contentores isolados (Distrobox e Podman) e gestores de pacotes em espaço de utilizador.
 
 Perfeito para **mim**.
 ---
